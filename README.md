@@ -6,3 +6,5 @@ fits the Holzapfel-Gasser-Ogden (HGO) hyperelastic model (i.e. neo-Hookean + 2 f
 ## **Running the code**:
 Easiest approach is to install [anaconda](https://www.anaconda.com/download/) software from Continuum Analytics. It has all the required python packages (numpy, scipy, matplotlib) and Spyder IDE.
 
+## **Additions on local**:
+Let's see if this works
