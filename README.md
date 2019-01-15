@@ -8,7 +8,7 @@ The code fits the Holzapfel-Gasser-Ogden (HGO) hyperelastic model (i.e. neo-Hook
 Easiest approach is to install [anaconda](https://www.anaconda.com/download/) software from Continuum Analytics. It has all the required python packages (numpy, scipy, matplotlib) and Spyder IDE.
 
 ## **Experimental Data**:
-Inflation (pressure-diameter) - extension (force-length) test data are contained in the Data folder. There are eight each of control and elastase samples according to the published journal article.
+Inflation (pressure-diameter) - extension (force-length) test data are in the .mat files contained in the Data folder. There are eight each for control and elastase samples according to the published journal article.
 
 ## ""Sample Outputs**:
 Sample code outputs (plots and optimized parameter values) are in folder "control1".
