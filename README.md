@@ -10,5 +10,5 @@ Easiest approach is to install [anaconda](https://www.anaconda.com/download/) so
 ## **Experimental Data**:
 Inflation (pressure-diameter) - extension (force-length) test data are in the .mat files contained in the Data folder. There are eight each for control and elastase samples according to the published journal article.
 
-## ""Sample Outputs**:
+## **Sample Outputs**:
 Sample code outputs (plots and optimized parameter values) are in folder "control1".
