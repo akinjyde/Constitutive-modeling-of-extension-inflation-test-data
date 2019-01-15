@@ -1,7 +1,7 @@
 # murine-vagina
 vaginal inflation extension modeling
 ## **About the code**:
-This code was used in hyerelastic model fitting for published article: Akintunde AR, Robison KM, Capone DJ, Desrosiers L, Knoepp LR, Miller KS. Effects of Elastase Digestion on the Murine Vaginal Wall Biaxial Mechanical Response. ASME. J Biomech Eng. 2018;141(2):021011-021011-11. doi:10.1115/1.4042014
+This code was used in hyerelastic model fitting for published article: [Akintunde AR, Robison KM, Capone DJ, Desrosiers L, Knoepp LR, Miller KS. Effects of Elastase Digestion on the Murine Vaginal Wall Biaxial Mechanical Response. ASME. J Biomech Eng. 2018;141(2):021011-021011-11](doi:10.1115/1.4042014)
 The code fits the Holzapfel-Gasser-Ogden (HGO) hyperelastic model (i.e. neo-Hookean + 2 fiber family of Fung exponential) to the pressure-diameter experimental data.
 
 ## **Running the code**:
