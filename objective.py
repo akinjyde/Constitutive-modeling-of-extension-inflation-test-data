@@ -5,17 +5,10 @@
 import numpy as np
 
 
-def main(x, Crr, Cqq, Czz, Ir, Or, P_exp, ft_exp, model):
+def main(x, Crr, Cqq, Czz, Ir, Or, P_exp, ft_exp):
     
-    if model == 'NH_2FF':
-        # Import model-dependent module, and functions
-        from theory_nh2ff import Pressure_th, TForce_th
-    elif model == 'gHY':
-        # Import model-dependent module, and functions
-        from theory_gHY import Pressure_th, TForce_th
-    elif model == 'gSRM':
-        # Import model-dependent module, and functions
-        from theory_gSRM import Pressure_th, TForce_th
+    # Import model-dependent module, and functions
+    from theory_nh2ff import Pressure_th, TForce_th
         
     '''
     #   High loads:    Ferruzzi et al., 2013

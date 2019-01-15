@@ -44,7 +44,7 @@ def main(file):
     fiv = fpiv + ftiv                        # Total axial force [N]
     Tzziv = fiv/(np.pi*(oriv**2 - iriv**2))  # Axial Cauchy stress [Pa]
     
-    # =============================================================================
+    # =========================================================================
     #   Read in and format data for the 4% above test
     test3 = biaxial_Pd['test3']
     test3data = biaxial_Pd['test3data']
@@ -66,7 +66,7 @@ def main(file):
     f4a = fp4a + ft4a                        # Total axial force [N]
     Tzz4a = f4a/(np.pi*(or4a**2 - ir4a**2))  # Axial Cauchy stress [Pa]
     
-    # =============================================================================
+    # =========================================================================
     #   Concatenation of in vivo with 4% above    
 #    Or = np.concatenate((oriv, or4a), axis=0)
 #    Or.sort(axis=0)
@@ -127,7 +127,10 @@ def main(file):
     Czz = Lzz**2
     P_iv = Piv
     
-    return Or, Ir, h, Crr, Cqq, Czz, P_exp, ft_exp, Lrriv, Lqqiv, Lzziv, iriv, oriv, hiv, ftiv, fiv, OD_iv, P_iv, Trriv, Tqqiv, Tzziv, Lrr4a, Lqq4a, Lzz4a, ir4a, or4a, h4a, ft4a, f4a, OD_4a, P_4a, Trr4a, Tqq4a, Tzz4a
+    return (Or, Ir, h, Crr, Cqq, Czz, P_exp, ft_exp, Lrriv, Lqqiv, Lzziv, iriv,
+            oriv, hiv, ftiv, fiv, OD_iv, P_iv, Trriv, Tqqiv, Tzziv, Lrr4a,
+            Lqq4a, Lzz4a, ir4a, or4a, h4a, ft4a, f4a, OD_4a, P_4a, Trr4a,
+            Tqq4a, Tzz4a)
 
 #
 if __name__ == "__main__":

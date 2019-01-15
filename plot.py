@@ -9,7 +9,7 @@ import matplotlib.ticker as tk
 
 def main(x, Lrriv, Lqqiv, Lzziv, iriv, oriv, hiv, ftiv, fiv, OD_iv, P_iv,
          Trriv, Tqqiv, Tzziv, Lrr4a, Lqq4a, Lzz4a, ir4a, or4a, h4a, ft4a,
-         f4a, OD_4a, P_4a, Trr4a, Tqq4a, Tzz4a, model, filename, path, dPdLq,
+         f4a, OD_4a, P_4a, Trr4a, Tqq4a, Tzz4a, filename, path, dPdLq,
          PIntercept, Lqq_iv):
     
     print('making plots ...')
@@ -39,92 +39,37 @@ def main(x, Lrriv, Lqqiv, Lzziv, iriv, oriv, hiv, ftiv, fiv, OD_iv, P_iv,
     Czz4a = Lzz4a**2
     
   
-    if model == 'NH_2FF':
+    # Import model-dependent module, and functions
+    from theory_nh2ff import Pressure_th, TForce_th
+    
+    # Compute theoretical for in vivo with optimized parameters
+    
+    P_th_iv = Pressure_th(x, Crriv, Cqqiv, Czziv, iriv, oriv)   # kPa        
+    ft_th_iv = TForce_th(x, Crriv, Cqqiv, Czziv, iriv, oriv)    # kN                
+    fp_th_iv = P_th_iv*np.pi*iriv**2                            # kN
+    f_th_iv = fp_th_iv + ft_th_iv                               # kN
+    
+    Trrivth = (-P_th_iv*iriv)/(oriv + iriv)                     # kPa
+    Tqqivth = (iriv*P_th_iv)/hiv                                # kPa
+    Tzzivth = f_th_iv/(np.pi*(oriv**2 - iriv**2))               # kPa
+    # Addition of shear stress made on February 3rd, 2018
+    I4 = Cqqiv*((np.sin(x[3]))**2) + Czziv*((np.cos(x[3]))**2)
+    v = I4 - 1.0
+    w = x[2]*(v**2)                                             # Unitless        
+    W4 = 2.0*x[1]*v*np.exp(w)                                   # kPa
+    Tqzivth = 2.0*W4*Lqqiv*Lzziv*np.sin(x[3])*np.cos(x[3])      # kPa ?
 
-        # Import model-dependent module, and functions
-        from theory_nh2ff import Pressure_th, TForce_th
-        
-        # Compute theoretical for in vivo with optimized parameters
-        
-        P_th_iv = Pressure_th(x, Crriv, Cqqiv, Czziv, iriv, oriv)   # kPa        
-        ft_th_iv = TForce_th(x, Crriv, Cqqiv, Czziv, iriv, oriv)    # kN                
-        fp_th_iv = P_th_iv*np.pi*iriv**2                            # kN
-        f_th_iv = fp_th_iv + ft_th_iv                               # kN
-        
-        Trrivth = (-P_th_iv*iriv)/(oriv + iriv)                     # kPa
-        Tqqivth = (iriv*P_th_iv)/hiv                                # kPa
-        Tzzivth = f_th_iv/(np.pi*(oriv**2 - iriv**2))               # kPa
-        # Addition of shear stress made on February 3rd, 2018
-        I4 = Cqqiv*((np.sin(x[3]))**2) + Czziv*((np.cos(x[3]))**2)
-        v = I4 - 1.0
-        w = x[2]*(v**2)                                             # Unitless        
-        W4 = 2.0*x[1]*v*np.exp(w)                                   # kPa
-        Tqzivth = 2.0*W4*Lqqiv*Lzziv*np.sin(x[3])*np.cos(x[3])      # kPa ?
+    # Compute theoretical for 4% ABOVE with optimized parameters
+   
+    P_th_4a = Pressure_th(x, Crr4a, Cqq4a, Czz4a, ir4a, or4a)   # kPa       
+    ft_th_4a = TForce_th(x, Crr4a, Cqq4a, Czz4a, ir4a, or4a)    # kN
+    fp_th_4a = P_th_4a*np.pi*ir4a**2                            # kN
+    f_th_4a = fp_th_4a + ft_th_4a                               # kN
     
-        # Compute theoretical for 4% ABOVE with optimized parameters
-       
-        P_th_4a = Pressure_th(x, Crr4a, Cqq4a, Czz4a, ir4a, or4a)   # kPa       
-        ft_th_4a = TForce_th(x, Crr4a, Cqq4a, Czz4a, ir4a, or4a)    # kN
-        fp_th_4a = P_th_4a*np.pi*ir4a**2                            # kN
-        f_th_4a = fp_th_4a + ft_th_4a                               # kN
+    Trr4ath = (-P_th_4a*ir4a)/(or4a + ir4a)                     # kPa
+    Tqq4ath = (ir4a*P_th_4a)/h4a                                # kPa
+    Tzz4ath = f_th_4a/(np.pi*(or4a**2 - ir4a**2))               # kPa
         
-        Trr4ath = (-P_th_4a*ir4a)/(or4a + ir4a)                     # kPa
-        Tqq4ath = (ir4a*P_th_4a)/h4a                                # kPa
-        Tzz4ath = f_th_4a/(np.pi*(or4a**2 - ir4a**2))               # kPa
-        
-    elif model == 'gHY':
-        
-        # Import model-dependent module, and functions
-        from theory_gHY import Pressure_th, TForce_th
-        
-        # Compute theoretical for in vivo with optimized parameters
-        
-        P_th_iv = Pressure_th(x, Crriv, Cqqiv, Czziv, iriv, oriv)   # kPa        
-        ft_th_iv = TForce_th(x, Crriv, Cqqiv, Czziv, iriv, oriv)    # kN                
-        fp_th_iv = P_th_iv*np.pi*iriv**2                            # kN 
-        f_th_iv = fp_th_iv + ft_th_iv                               # kN 
-        
-        Trrivth = (-P_th_iv*iriv)/(oriv + iriv)                     # kPa 
-        Tqqivth = (iriv*P_th_iv)/hiv                                # kPa
-        Tzzivth = f_th_iv/(np.pi*(oriv**2 - iriv**2))               # kPa
-    
-        # Compute theoretical for 4% ABOVE with optimized parameters
-       
-        P_th_4a = Pressure_th(x, Crr4a, Cqq4a, Czz4a, ir4a, or4a)   # kPa       
-        ft_th_4a = TForce_th(x, Crr4a, Cqq4a, Czz4a, ir4a, or4a)    # kN
-        fp_th_4a = P_th_4a*np.pi*ir4a**2                            # kN
-        f_th_4a = fp_th_4a + ft_th_4a                               # kN
-        
-        Trr4ath = (-P_th_4a*ir4a)/(or4a + ir4a)                     # kPa
-        Tqq4ath = (ir4a*P_th_4a)/h4a                                # kPa
-        Tzz4ath = f_th_4a/(np.pi*(or4a**2 - ir4a**2))               # kPa
-        
-    elif model == 'gSRM':
-        
-        # Import model-dependent module, and functions
-        from theory_gSRM import Pressure_th, TForce_th
-        
-        # Compute theoretical for in vivo with optimized parameters
-        
-        P_th_iv = Pressure_th(x, Crriv, Cqqiv, Czziv, iriv, oriv)   # kPa        
-        ft_th_iv = TForce_th(x, Crriv, Cqqiv, Czziv, iriv, oriv)    # kN                
-        fp_th_iv = P_th_iv*np.pi*iriv**2                            # kN
-        f_th_iv = fp_th_iv + ft_th_iv                               # kN
-        
-        Trrivth = (-P_th_iv*iriv)/(oriv + iriv)                     # kPa
-        Tqqivth = (iriv*P_th_iv)/hiv                                # kPa
-        Tzzivth = f_th_iv/(np.pi*(oriv**2 - iriv**2))               # kPa
-    
-        # Compute theoretical for 4% ABOVE with optimized parameters
-       
-        P_th_4a = Pressure_th(x, Crr4a, Cqq4a, Czz4a, ir4a, or4a)   # kPa       
-        ft_th_4a = TForce_th(x, Crr4a, Cqq4a, Czz4a, ir4a, or4a)    # kN
-        fp_th_4a = P_th_4a*np.pi*ir4a**2                            # kN
-        f_th_4a = fp_th_4a + ft_th_4a                               # kN
-        
-        Trr4ath = (-P_th_4a*ir4a)/(or4a + ir4a)                     # kPa
-        Tqq4ath = (ir4a*P_th_4a)/h4a                                # kPa
-        Tzz4ath = f_th_4a/(np.pi*(or4a**2 - ir4a**2))               # kPa
     
     # =========================================================================
     ''' Pressure vs outer diameter plot (in vivo and 4% above) '''
@@ -145,7 +90,7 @@ def main(x, Lrriv, Lqqiv, Lzziv, iriv, oriv, hiv, ftiv, fiv, OD_iv, P_iv,
     plt.ylabel('Pressure (mmHg)', fontsize=12)
     plt.title(filename, fontsize=12)
     plt.legend(loc='upper center')
-    plt.savefig("%s\%s\%s\%s" % (path, filename, model, 'P_OD'), dpi=300,
+    plt.savefig("%s\%s\%s" % (path, filename, 'P_OD'), dpi=300,
                 bbox_inches="tight")
     # ========================================================================
     plt.figure()
@@ -162,7 +107,7 @@ def main(x, Lrriv, Lqqiv, Lzziv, iriv, oriv, hiv, ftiv, fiv, OD_iv, P_iv,
     plt.ylabel('Pressure (mmHg)', fontsize=12)
     plt.title(filename, fontsize=12)
     plt.legend(loc='upper center')
-    plt.savefig("%s\%s\%s\%s" % (path, filename, model, 'P_Lqq_tangent'),
+    plt.savefig("%s\%s\%s" % (path, filename, 'P_Lqq_tangent'),
                 dpi=300, bbox_inches="tight")
     # =========================================================================
     ''' Total Axial force vs pressure (in vivo and 4% above) '''
@@ -180,7 +125,7 @@ def main(x, Lrriv, Lqqiv, Lzziv, iriv, oriv, hiv, ftiv, fiv, OD_iv, P_iv,
     plt.ylabel('Total axial Force (mN)', fontsize=12)
     plt.title(filename, fontsize=12)
     plt.legend(loc='upper center')
-    plt.savefig("%s\%s\%s\%s" % (path, filename, model, 'F_P'), dpi=300,
+    plt.savefig("%s\%s\%s" % (path, filename, 'F_P'), dpi=300,
                 bbox_inches="tight")
     # =========================================================================
     ''' Transducer-measured force vs pressure (in vivo and 4% above) '''
@@ -198,7 +143,7 @@ def main(x, Lrriv, Lqqiv, Lzziv, iriv, oriv, hiv, ftiv, fiv, OD_iv, P_iv,
     plt.ylabel('Axial Force (mN)', fontsize=12)
     plt.title(filename, fontsize=12)
     plt.legend(loc='upper center')
-    plt.savefig("%s\%s\%s\%s" % (path, filename, model, 'FT_P'), dpi=300,
+    plt.savefig("%s\%s\%s" % (path, filename, 'FT_P'), dpi=300,
                 bbox_inches="tight")
     # =========================================================================
     ''' Tqq vs Lqq plot (in vivo and 4% above) '''
@@ -219,7 +164,7 @@ def main(x, Lrriv, Lqqiv, Lzziv, iriv, oriv, hiv, ftiv, fiv, OD_iv, P_iv,
     plt.ylabel(r'$\sigma_{\theta\theta}$ (kPa)', fontsize=12)
     plt.title(filename, fontsize=12)
     plt.legend(loc='upper center')
-    plt.savefig("%s\%s\%s\%s" % (path, filename, model, 'Tqq_Lqq'), dpi=300,
+    plt.savefig("%s\%s\%s" % (path, filename, 'Tqq_Lqq'), dpi=300,
                 bbox_inches="tight")
     # =========================================================================
     ''' Tzz vs Lqq plot (in vivo and 4% above) '''
@@ -239,7 +184,7 @@ def main(x, Lrriv, Lqqiv, Lzziv, iriv, oriv, hiv, ftiv, fiv, OD_iv, P_iv,
     plt.ylabel(r'$\sigma_{zz}$ (kPa)', fontsize=12)
     plt.title(filename, fontsize=12)
     plt.legend(loc='upper center')
-    plt.savefig("%s\%s\%s\%s" % (path, filename, model, 'Tzz_Lqq'), dpi=300,
+    plt.savefig("%s\%s\%s" % (path, filename, 'Tzz_Lqq'), dpi=300,
                 bbox_inches="tight")
     # =========================================================================
     ''' Tzz vs Lzz plot (in vivo and 4% above) '''
@@ -277,7 +222,7 @@ def main(x, Lrriv, Lqqiv, Lzziv, iriv, oriv, hiv, ftiv, fiv, OD_iv, P_iv,
     plt.ylabel(r'$\sigma_{rr}$ (kPa)', fontsize=12)
     plt.title(filename, fontsize=12)
     plt.legend(loc='lower center')
-    plt.savefig("%s\%s\%s\%s" % (path, filename, model, 'Trr_Lrr'), dpi=300,
+    plt.savefig("%s\%s\%s" % (path, filename, 'Trr_Lrr'), dpi=300,
                 bbox_inches="tight")
     
     return (Trrivth, Tqqivth, Tzzivth, Tqzivth, P_th_iv, ft_th_iv, f_th_iv, Trr4ath,

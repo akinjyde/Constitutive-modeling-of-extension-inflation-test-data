@@ -56,8 +56,7 @@ def main(P_iv, OD_iv):
     C5 = (OD_20 - OD_15)/(20.0 - 15.0)
 #    C7 = (OD_25 - OD_20)/(25.0 - 20.0)
     
-    return (OD_2_5, OD_5, OD_7_5, OD_10, OD_15, OD_20,
-            C1, C2, C3, C4, C5)
+    return (OD_2_5, OD_5, OD_7_5, OD_10, OD_15, OD_20, C1, C2, C3, C4, C5)
     
     
     
